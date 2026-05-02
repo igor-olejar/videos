@@ -1,14 +1,19 @@
 <?php
 
 // DANGER: No memory of previous attempts
-function processPayment($userId, $amount) {
+function processPayment($userId, $amount): string {
+    $paymentStatus = false;
+    
     // 1. Charge the credit card via API
-    $paymentGateway->charge($userId, $amount);
+    $paymentStatus = $paymentGateway->charge($userId, $amount); // get true or false
 
-    // 2. Update the local database
-    $db->query("UPDATE users SET balance = balance - $amount WHERE id = $userId");
+    if ($paymentStatus === true) {
+        // 2. Update the local database
+        $db->query("UPDATE users SET balance = balance - $amount WHERE id = $userId");
+        return "Success";
+    }
 
-    return "Success";
+    return "failure";
 }
 
 // If the network dies after step 1 but before the return, 

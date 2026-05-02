@@ -1,3 +1,5 @@
+<?php
+
 // DANGER: No memory of previous attempts
 function processPayment($userId, $amount) {
     // 1. Charge the credit card via API
